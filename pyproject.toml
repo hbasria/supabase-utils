@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sb_utils"
-version = "0.1.0"
+version = "0.1.1"
 description = "A collection of framework specific utilities for working with Supabase."
 authors = ["Basri <h@basri.me>"]
 license = "MIT"
