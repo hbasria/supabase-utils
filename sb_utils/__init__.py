@@ -1,7 +1,7 @@
 import os
 from typing import List
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from supabase import create_client, Client
 
 
@@ -39,13 +39,10 @@ def get_model_field_names(model_cls: type, related_name: str = None) -> List[str
     fields = []
     for field_name, field_obj in model_cls.__fields__.items():
         if related_name and field_name != related_name:
-            continue
-            
-        if issubclass(field_obj.annotation, BaseModel):
-            extra_related_name = None
-            if "related_name" in field_obj.json_schema_extra:
-                extra_related_name = field_obj.json_schema_extra.get("related_name")
+            continue        
 
+        if field_obj.json_schema_extra and "related_name" in field_obj.json_schema_extra:
+            extra_related_name = field_obj.json_schema_extra.get("related_name")
             nested_fields = [f"{field_name}({subfield})" for subfield in get_model_field_names(field_obj.annotation, related_name=extra_related_name)]
             fields.extend(nested_fields)
         else:
